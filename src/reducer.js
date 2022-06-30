@@ -2,6 +2,13 @@ export const initialState = {
 	cart: [],
 }
 
+export const getTotalPrice = cart =>
+	cart?.reduce(
+		(previousValue, currentValue) =>
+			previousValue + parseInt(currentValue.price),
+		0
+	)
+
 const reducer = (state, action) => {
 	console.log(action)
 	switch (action.type) {
