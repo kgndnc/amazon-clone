@@ -1,14 +1,11 @@
 import { useStateValue } from '../StateProvider'
 import './Product.css'
 
-function Product({ _key, id, title, image, price, rating }) {
+function Product({ _key, id, title, className, image, price, rating }) {
 	const [{ cart }, dispatch] = useStateValue()
 
-	console.log('cart :>> ', cart)
-	console.log('first', { id, title, image, price, rating })
-
 	const addToCart = () => {
-		const randNum = Math.random()
+		const randNum = Math.ceil(Math.random() * 1000)
 		// dispatch the item into the data layer
 		dispatch({
 			type: 'ADD_TO_CART',
@@ -24,7 +21,7 @@ function Product({ _key, id, title, image, price, rating }) {
 	}
 
 	return (
-		<div className={`product${title === 'LG OLED TV' ? ' wide' : ''}`}>
+		<div className={`product${className ? ' ' + className : ''}`}>
 			<div className='product--info'>
 				<p>{title}</p>
 				<p className='product--price'>

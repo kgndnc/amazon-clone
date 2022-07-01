@@ -52,7 +52,8 @@ function Home() {
 				<div className='home--row'>
 					<Product
 						id={6}
-						title='LG OLED TV'
+						title='LG LED TV'
+						className='wide'
 						image='https://m.media-amazon.com/images/I/61-8fUodSGL._AC_SL1100_.jpg'
 						price='379.99'
 						rating={5}
