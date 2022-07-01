@@ -2,9 +2,12 @@ import './Checkout.css'
 import CartItem from './CartItem'
 import Subtotal from './Subtotal'
 import { useStateValue } from '../StateProvider'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { auth } from '../firebase'
 
 function Checkout() {
 	const [{ cart }, dispatch] = useStateValue()
+	const [user, loading, error] = useAuthState(auth)
 
 	return (
 		<div className='checkout'>
@@ -15,6 +18,14 @@ function Checkout() {
 					className='checkout--ad'
 				/>
 				<div className='cart'>
+					<h3>
+						Hello{' '}
+						{user
+							? user.displayName
+								? user.displayName
+								: user.email
+							: `Guest`}
+					</h3>
 					<h2 className='checkout--title'>Your shopping cart</h2>
 					{cart.map(item => {
 						return (

@@ -5,8 +5,20 @@ import Home from './components/Home'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Checkout from './components/Checkout'
 import Login from './components/Login'
+import { useStateValue } from './StateProvider'
+import { auth, authStateChanged } from './firebase'
+import { useEffect } from 'react'
+import { useAuthState } from 'react-firebase-hooks/auth'
 
 function App() {
+	const [{}, dispatch] = useStateValue()
+	const [user, loading, error] = useAuthState(auth)
+
+	useEffect(() => {
+		// will only run once when the app component loads
+		authStateChanged(user, dispatch)
+	}, [])
+
 	return (
 		<BrowserRouter>
 			<div className='app'>
