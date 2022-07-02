@@ -37,12 +37,14 @@ function Payment() {
 				method: 'POST',
 				// ücreti kuruş veya cent cinsinden yazman gerekiyor
 				// 12 USD --> 12000
-				url: `/payments/create?total=${getTotalPrice(cart) * 100}`,
+				url: `/payments/create?total=${(getTotalPrice(cart) * 100).toFixed(0)}`,
 			})
 			setClientSecret(response.data.clientSecret)
 		}
 		getClientSecret()
 	}, [cart])
+
+	console.log('THE CLIENT SECRET IS ---> ', clientSecret)
 
 	const stripe = useStripe()
 	const elements = useElements()
@@ -67,6 +69,10 @@ function Payment() {
 				setSucceeded(true)
 				setError(null)
 				setProcessing(false)
+
+				dispatch({
+					type: 'EMPTY_CART',
+				})
 
 				// navigate to orders page after payment process has completed
 				// replace:true = history.replace('/path')

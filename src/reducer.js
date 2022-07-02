@@ -23,6 +23,12 @@ const reducer = (state, action) => {
 				cart: state.cart.filter(item => item._key !== action._key),
 			}
 
+		case 'EMPTY_CART':
+			return {
+				...state,
+				cart: [],
+			}
+
 		default:
 			return state
 	}
