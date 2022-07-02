@@ -60,7 +60,15 @@
 	display: flex;
 	align-items: center;
 	color: white;
+	cursor: pointer;
 }
+.header--option-basket:hover {
+	border: 1px inset lightgray;
+	border-style: inset;
+	border-radius: 3px;
+	border-collapse: separate;
+}
+
 .header--basket-count {
 	margin: 0 10px;
 }

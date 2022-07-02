@@ -1,4 +1,3 @@
-import './App.css'
 import Header from './components/Header'
 import Home from './components/Home'
 
@@ -9,6 +8,7 @@ import { useStateValue } from './StateProvider'
 import { auth, authStateChanged } from './firebase'
 import { useEffect } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import Payment from './components/Payment'
 
 function App() {
 	const [{}, dispatch] = useStateValue()
@@ -37,6 +37,15 @@ function App() {
 							<>
 								<Header />
 								<Checkout />
+							</>
+						}
+					/>
+					<Route
+						path='/payment'
+						element={
+							<>
+								<Header />
+								<Payment />
 							</>
 						}
 					/>

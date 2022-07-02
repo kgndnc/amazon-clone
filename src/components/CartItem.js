@@ -21,8 +21,7 @@ function CartItem({ _key, id, title, image, price, rating }) {
 			<div className='cart-item--info'>
 				<p className='cart-item--title'>{title}</p>
 				<p className='cart-item--price'>
-					<small>$</small>
-					<strong>{price}</strong>
+					<strong>${price}</strong>
 				</p>
 				<div className='cart-item--rating'>
 					<p>

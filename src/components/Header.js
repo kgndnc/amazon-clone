@@ -1,13 +1,15 @@
 import './Header.css'
 import SearchIcon from '@mui/icons-material/Search'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useStateValue } from '../StateProvider'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth, logout } from '../firebase'
 function Header() {
 	const [{ cart }, dispatch] = useStateValue()
 	const [authUser, loading, error] = useAuthState(auth)
+
+	const navigate = useNavigate()
 
 	const name = authUser?.email.slice(0, authUser?.email.indexOf('@'))
 
@@ -54,12 +56,15 @@ function Header() {
 					<span className='header--option-line-two'>Prime</span>
 				</div>
 
-				<Link to='/checkout' className='header--option-basket'>
+				<div
+					className='header--option-basket'
+					onClick={() => navigate('/checkout')}
+				>
 					<ShoppingCartIcon />
 					<span className='header--option-line-two header--basket-count'>
 						{cart?.length}
 					</span>
-				</Link>
+				</div>
 			</div>
 		</div>
 	)

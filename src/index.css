@@ -20,3 +20,10 @@ a {
 	text-decoration: none;
 }
 
+a:hover {
+	border: 1px inset lightgray;
+	border-style: inset;
+	border-radius: 3px;
+	border-collapse: separate;
+}
+

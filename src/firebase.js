@@ -109,7 +109,6 @@ const authStateChanged = async function (authUser, dispatch) {
 				})
 			}
 		})
-		alert('Some message')
 	} catch (err) {
 		console.error(err)
 		alert(err.message)

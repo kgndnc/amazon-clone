@@ -13,7 +13,7 @@ function Home() {
 				<div className='home--row'>
 					<Product
 						id={1}
-						title='Canon Camera Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum '
+						title='Canon Camera'
 						image='https://images-eu.ssl-images-amazon.com/images/G/41/TR-hq/2022/img/Consumer_Electronics/XCM_CUTTLE_1402831_2138440_TR_CUTTLE_379x304_1X_tr_TR._SY304_CB648318178_.jpg'
 						price='79.99'
 						rating={5}

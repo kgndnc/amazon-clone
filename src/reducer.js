@@ -4,8 +4,7 @@ export const initialState = {
 
 export const getTotalPrice = cart =>
 	cart?.reduce(
-		(previousValue, currentValue) =>
-			previousValue + parseInt(currentValue.price),
+		(previousValue, currentValue) => previousValue + Number(currentValue.price),
 		0
 	)
 

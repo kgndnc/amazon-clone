@@ -40,6 +40,7 @@
 
 .cart-item {
 	display: flex;
+	flex-direction: row;
 	margin-top: 20px;
 	margin-bottom: 20px;
 	background-color: #f3f3f3;
@@ -62,5 +63,5 @@
 .cart-item--image {
 	object-fit: contain;
 	width: 180px;
-	height: 180px;
+	max-height: 180px;
 }
