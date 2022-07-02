@@ -28,6 +28,7 @@
 }
 
 .payment--address,
-.payment--items {
+.payment--items,
+.payment--details {
 	flex: 0.6;
 }

@@ -1,14 +1,27 @@
 import Header from './components/Header'
 import Home from './components/Home'
-
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Checkout from './components/Checkout'
 import Login from './components/Login'
-import { useStateValue } from './StateProvider'
-import { auth, authStateChanged } from './firebase'
-import { useEffect } from 'react'
-import { useAuthState } from 'react-firebase-hooks/auth'
 import Payment from './components/Payment'
+
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useStateValue } from './StateProvider'
+
+import { auth, authStateChanged } from './firebase'
+import { useAuthState } from 'react-firebase-hooks/auth'
+
+// For paymnet processing (stripe)
+import { loadStripe } from '@stripe/stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
+
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+
+// you don't need to hide this key (or add it to .gitignore) don't worry it's public key
+const promise = loadStripe(
+	'pk_test_51LGtsAJ3wgzQ33d690fRata9KPGBUEETHT5pOVoaLWuSaVxAlae9x7IRKZr1erCN1CTOo25yUBwsUWmxWPKtK7J300pVg7v91S'
+)
 
 function App() {
 	const [{}, dispatch] = useStateValue()
@@ -45,7 +58,11 @@ function App() {
 						element={
 							<>
 								<Header />
-								<Payment />
+
+								{/* For payment processing wrap Payment */}
+								<Elements stripe={promise}>
+									<Payment />
+								</Elements>
 							</>
 						}
 					/>

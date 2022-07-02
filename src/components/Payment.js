@@ -1,14 +1,86 @@
+import { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import CartItem from './CartItem'
+import './Payment.css'
+
 import { useStateValue } from '../StateProvider'
 import { auth, logout } from '../firebase'
 import { useAuthState } from 'react-firebase-hooks/auth'
 
-import './Payment.css'
-import CartItem from './CartItem'
-import { Link } from 'react-router-dom'
+import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
+import CurrencyFormat from 'react-currency-format'
+import { getTotalPrice } from '../reducer'
+import axios from '../axios'
 
 function Payment() {
 	const [{ cart }, dispatch] = useStateValue()
-	const [user, loading, error] = useAuthState(auth)
+	const [user, loading, authError] = useAuthState(auth)
+	console.log('authError :>> ', authError)
+
+	const [error, setError] = useState(null)
+	const [disabled, setDisabled] = useState(true)
+
+	const [succeeded, setSucceeded] = useState(false)
+	const [processing, setProcessing] = useState('')
+
+	const [clientSecret, setClientSecret] = useState(true)
+
+	const navigate = useNavigate()
+
+	// !!! IMPORTANT !!!
+	// PAYMENT PROCESSING
+	useEffect(() => {
+		// generate the special stripe secret which allows us to charge a customer
+
+		const getClientSecret = async () => {
+			const response = await axios({
+				method: 'POST',
+				// ücreti kuruş veya cent cinsinden yazman gerekiyor
+				// 12 USD --> 12000
+				url: `/payments/create?total=${getTotalPrice(cart) * 100}`,
+			})
+			setClientSecret(response.data.clientSecret)
+		}
+		getClientSecret()
+	}, [cart])
+
+	const stripe = useStripe()
+	const elements = useElements()
+
+	const handleSubmit = async event => {
+		event.preventDefault()
+
+		// do all fancy stripe stuff
+
+		// prevent the user to click the button again and again
+		setProcessing(true)
+
+		const payload = await stripe
+			.confirmCardPayment(clientSecret, {
+				payment_method: {
+					card: elements.getElement(CardElement),
+				},
+			})
+			.then(({ paymentIntent }) => {
+				// payment intent = payment confirmation
+
+				setSucceeded(true)
+				setError(null)
+				setProcessing(false)
+
+				// navigate to orders page after payment process has completed
+				// replace:true = history.replace('/path')
+				// so that user can't go back to this page
+				navigate('/orders', { replace: true })
+			})
+	}
+
+	const handleChange = event => {
+		// Listen for changes in the Card Element
+		// and display any errors as the customer types their card details
+		setDisabled(event.empty)
+		setError(event.error ? event.error.message : '')
+	}
 
 	return (
 		<div className='payment'>
@@ -57,6 +129,31 @@ function Payment() {
 					</div>
 					<div className='payment--details'>
 						{/* Stripe magic will go here */}
+						<form onSubmit={handleSubmit}>
+							<CardElement onChange={handleChange} />
+							<div className='payment--priceContainer'>
+								<CurrencyFormat
+									renderText={value => (
+										<>
+											<h3>
+												Order Total: <strong>{value}</strong>
+											</h3>
+										</>
+									)}
+									decimalScale={2}
+									value={getTotalPrice(cart)}
+									displayType={'text'}
+									thousandSeparator={true}
+									prefix={'$'}
+								/>
+								<button disabled={processing || disabled || succeeded}>
+									<span>{processing ? <p>Processing</p> : 'Buy Now'} </span>
+								</button>
+							</div>
+
+							{/* Errors */}
+							{error && <div>{error}</div>}
+						</form>
 					</div>
 				</div>
 			</div>
