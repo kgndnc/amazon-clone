@@ -1,0 +1,72 @@
+.navFooterBackToTop {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: rgba(182, 179, 174, 0.753);
+	font-size: 0.85em;
+	height: 50px;
+	background-color: rgb(53, 63, 74);
+}
+
+.navFooterBackToTop:hover {
+	color: whitesmoke;
+	cursor: pointer;
+}
+
+.footer {
+	position: relative;
+	width: 100%;
+	min-width: 940px;
+	background-color: rgb(41, 48, 57);
+}
+
+.navFooterVerticalColumn {
+	color: whitesmoke;
+	padding-top: 50px;
+	width: 100%;
+	min-width: 100%;
+}
+
+.navFooterVerticalRow {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin: 0 20px;
+}
+
+.navFooterVerticalRow ul > li {
+	color: rgba(182, 179, 174, 0.753);
+	/* color: rgb(189, 187, 184); */
+	margin: 6px 0;
+	font-size: 0.85em;
+}
+
+.navFooterLinkCol {
+	margin: 0 30px;
+}
+ul {
+	list-style-type: none;
+	padding: 0;
+	padding-top: 10px;
+}
+
+.navFooterColHead {
+	font-size: 1.1em;
+	font-weight: 600;
+	color: rgb(197, 195, 193);
+}
+
+.nav-footer-logo {
+	position: relative;
+	height: 90px;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+}
+
+.footer--logo {
+	position: absolute;
+	bottom: 20px;
+	width: 80px;
+	object-fit: contain;
+}

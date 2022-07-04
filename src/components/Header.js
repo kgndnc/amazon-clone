@@ -5,15 +5,16 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useStateValue } from '../StateProvider'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth, logout } from '../firebase'
+
 function Header() {
 	const [{ cart }, dispatch] = useStateValue()
 	const [authUser, loading, error] = useAuthState(auth)
 
 	const navigate = useNavigate()
 
-	const name = authUser?.email.slice(0, authUser?.email.indexOf('@'))
-
-	console.log('authUser', authUser)
+	const name =
+		authUser?.displayName ||
+		authUser?.email.slice(0, authUser?.email.indexOf('@'))
 
 	const handleAuthentication = () => {
 		if (authUser) {
@@ -32,7 +33,18 @@ function Header() {
 			</Link>
 
 			<div className='header--search'>
-				<input className='header--search-input' type='text' />
+				<input
+					className='header--search-input'
+					type='text'
+					onFocus={() => {
+						document.body.style.filter = 'brightness(0.6)'
+						document.querySelector('.header').style.filter = 'none'
+						// document.body.style.filter = 'blur(1px)'
+					}}
+					onBlur={() => {
+						document.body.style.filter = 'none'
+					}}
+				/>
 				<SearchIcon className='header--search-icon' />
 			</div>
 
@@ -47,10 +59,14 @@ function Header() {
 						</span>
 					</div>
 				</Link>
-				<div className='header--option'>
-					<span className='header--option-line-one'>Returns</span>
-					<span className='header--option-line-two'>& Orders</span>
-				</div>
+
+				<Link to='/orders'>
+					<div className='header--option'>
+						<span className='header--option-line-one'>Returns</span>
+						<span className='header--option-line-two'>& Orders</span>
+					</div>
+				</Link>
+
 				<div className='header--option'>
 					<span className='header--option-line-one'>Your</span>
 					<span className='header--option-line-two'>Prime</span>

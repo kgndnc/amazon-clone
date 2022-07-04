@@ -1,23 +1,17 @@
-import './Login.css'
 import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-
 import {
 	auth,
 	logInWithEmailAndPassword,
 	signInWithGoogle,
 	registerWithEmailAndPassword,
 } from '../firebase'
-
 import { useAuthState } from 'react-firebase-hooks/auth'
 
-// export const loadingElement = (
-// 	<div className='loading-container'>
-// 		<ReactLoading className='loading' type='balls' color='#f0c14b' />
-// 	</div>
-// )
+import './Login.css'
 
-function Login() {
+function Register() {
+	const [name, setName] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [user, loading, error] = useAuthState(auth)
@@ -33,15 +27,21 @@ function Login() {
 		}
 	}, [user, loading])
 
-	const signIn = e => {
+	const register = e => {
 		e.preventDefault()
 
-		// firebase login stuff...
-		logInWithEmailAndPassword(email, password)
+		if (!email || !password || !name) {
+			alert('Please enter all fields')
+			setPassword('')
+
+			return
+		}
+		registerWithEmailAndPassword(name.trim(), email, password)
 			.then(auth => {
-				if (user) navigate('/')
-				else {
-					setPassword('')
+				// successfully created user
+
+				if (auth) {
+					navigate('/')
 				}
 			})
 			.catch(error => alert(error.message))
@@ -58,8 +58,15 @@ function Login() {
 			/>
 
 			<div className='login--container'>
-				<h1>Sign in</h1>
+				<h1>Sign up</h1>
 				<form>
+					<h5>User name</h5>
+					<input
+						type='text'
+						name='username'
+						value={name}
+						onChange={e => setName(e.target.value)}
+					/>
 					<h5>E-mail</h5>
 					<input
 						type='email'
@@ -76,12 +83,20 @@ function Login() {
 						onChange={e => setPassword(e.target.value)}
 					/>
 
-					<button
+					{/* <button
 						className='login--signInButton'
 						type='submit'
 						onClick={e => signIn(e)}
 					>
 						Sign in
+					</button> */}
+
+					<button
+						type='submit'
+						className='login--registerButton'
+						onClick={e => register(e)}
+					>
+						Create your Amazon account
 					</button>
 				</form>
 				<p>
@@ -91,16 +106,8 @@ function Login() {
 					vel minima.
 				</p>
 				<p>
-					Don't have an account? You can{' '}
-					<Link to='/register'>sign up here</Link>
+					Already have an account? You can <Link to='/login'>sign in here</Link>
 				</p>
-				<button
-					className='login--registerButton'
-					onClick={() => navigate('/register')}
-				>
-					Go to Sign up page
-				</button>
-
 				<h5 className='options-text'>Other options</h5>
 
 				<div className='google-btn-wrapper'>
@@ -117,10 +124,7 @@ function Login() {
 					</div>
 				</div>
 			</div>
-			{/*  */}
-
-			{/* <button onClick={() => signInWithGoogle()}>Sign in with Google</button> */}
 		</div>
 	)
 }
-export default Login
+export default Register

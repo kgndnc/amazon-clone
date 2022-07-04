@@ -14,6 +14,9 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 // For paymnet processing (stripe)
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
+import Orders from './components/Orders'
+import Footer from './components/Footer'
+import Register from './components/Register'
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -45,6 +48,14 @@ function App() {
 						}
 					/>
 					<Route
+						path='/register'
+						element={
+							<>
+								<Register />
+							</>
+						}
+					/>
+					<Route
 						path='/checkout'
 						element={
 							<>
@@ -67,11 +78,21 @@ function App() {
 						}
 					/>
 					<Route
+						path='/orders'
+						element={
+							<>
+								<Header />
+								<Orders />
+							</>
+						}
+					/>
+					<Route
 						path='/'
 						element={
 							<>
 								<Header />
 								<Home />
+								<Footer />
 							</>
 						}
 					/>

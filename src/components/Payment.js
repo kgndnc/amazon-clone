@@ -4,7 +4,7 @@ import CartItem from './CartItem'
 import './Payment.css'
 
 import { useStateValue } from '../StateProvider'
-import { auth, logout } from '../firebase'
+import { auth, db, setDoc, doc } from '../firebase'
 import { useAuthState } from 'react-firebase-hooks/auth'
 
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
@@ -15,7 +15,6 @@ import axios from '../axios'
 function Payment() {
 	const [{ cart }, dispatch] = useStateValue()
 	const [user, loading, authError] = useAuthState(auth)
-	console.log('authError :>> ', authError)
 
 	const [error, setError] = useState(null)
 	const [disabled, setDisabled] = useState(true)
@@ -44,8 +43,6 @@ function Payment() {
 		getClientSecret()
 	}, [cart])
 
-	console.log('THE CLIENT SECRET IS ---> ', clientSecret)
-
 	const stripe = useStripe()
 	const elements = useElements()
 
@@ -65,6 +62,31 @@ function Payment() {
 			})
 			.then(({ paymentIntent }) => {
 				// payment intent = payment confirmation
+
+				// save the order to the database (order history) with payment id
+				setDoc(doc(db, `users/${user?.uid}/orders/`, paymentIntent.id), {
+					uid: user?.uid,
+					amount: paymentIntent.amount,
+					cart: cart,
+					created: paymentIntent.created,
+				})
+
+				// addDoc(collection(db, `users/${user?.uid}/orders`), {
+				// 		cart: cart,
+				// 		amount: paymentIntent.amount,
+				// 		created: paymentIntent.created,
+				// 	})
+
+				// this is the same as above (above is done with modular methods)
+				// db.collection('users')
+				// 	.doc(user?.uid)
+				// 	.collection('orders')
+				// 	.doc(paymentIntent.id)
+				// 	.set({
+				// 		cart: cart,
+				// 		amount: paymentIntent.amount,
+				// 		created: paymentIntent.created,
+				// 	})
 
 				setSucceeded(true)
 				setError(null)
@@ -127,7 +149,10 @@ function Payment() {
 						))}
 					</div>
 				</div>
-
+				<p className='test-info'>
+					Try 4242 4242 4242 4242 for the card number and any date in the future
+					to test payment.
+				</p>
 				{/* Payment section - payment method */}
 				<div className='payment--section'>
 					<div className='payment--title'>
@@ -136,6 +161,7 @@ function Payment() {
 					<div className='payment--details'>
 						{/* Stripe magic will go here */}
 						<form onSubmit={handleSubmit}>
+							<br />
 							<CardElement onChange={handleChange} />
 							<div className='payment--priceContainer'>
 								<CurrencyFormat

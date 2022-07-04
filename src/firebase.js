@@ -18,6 +18,10 @@ import {
 	collection,
 	where,
 	addDoc,
+	setDoc,
+	doc,
+	onSnapshot,
+	orderBy,
 } from 'firebase/firestore'
 
 const firebaseConfig = {
@@ -32,7 +36,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
 const db = getFirestore(app)
+
 const googleProvider = new GoogleAuthProvider()
+
 const signInWithGoogle = async () => {
 	try {
 		const res = await signInWithPopup(auth, googleProvider)
@@ -40,7 +46,7 @@ const signInWithGoogle = async () => {
 		const q = query(collection(db, 'users'), where('uid', '==', user.uid))
 		const docs = await getDocs(q)
 		if (docs.docs.length === 0) {
-			await addDoc(collection(db, 'users'), {
+			await setDoc(doc(db, `users/${user.uid}`), {
 				uid: user.uid,
 				name: user.displayName,
 				authProvider: 'google',
@@ -60,16 +66,17 @@ const logInWithEmailAndPassword = async (email, password) => {
 		alert(err.message)
 	}
 }
-const registerWithEmailAndPassword = async (email, password) => {
+const registerWithEmailAndPassword = async (name, email, password) => {
 	try {
 		const res = await createUserWithEmailAndPassword(auth, email, password)
 		const user = res.user
-		const name = email.slice(0, email.indexOf('@'))
-		updateProfile(user, { displayName: name })
-		await addDoc(collection(db, 'users'), {
+		// const name = email.slice(0, email.indexOf('@'))
+		updateProfile(user, { name })
+		await setDoc(doc(db, `users/${user.uid}`), {
 			uid: user.uid,
 			authProvider: 'local',
 			email,
+			name,
 		})
 	} catch (err) {
 		console.error(err)
@@ -92,8 +99,6 @@ const logout = () => {
 const authStateChanged = async function (authUser, dispatch) {
 	try {
 		await onAuthStateChanged(auth, authUser => {
-			console.log('THE USER IS >>>> ', authUser)
-
 			if (authUser) {
 				// the user just logged in / the user was logged in
 
@@ -118,6 +123,13 @@ const authStateChanged = async function (authUser, dispatch) {
 export {
 	auth,
 	db,
+	addDoc,
+	setDoc,
+	doc,
+	collection,
+	onSnapshot,
+	orderBy,
+	query,
 	signInWithGoogle,
 	logInWithEmailAndPassword,
 	registerWithEmailAndPassword,

@@ -22,6 +22,12 @@
 	border-bottom: 1px solid lightgray;
 }
 
+.test-info {
+	text-align: center;
+	font-weight: 300;
+	font-size: 0.9em;
+}
+
 .payment--title {
 	/* Titles take up 20% now */
 	flex: 0.2;
@@ -31,4 +37,16 @@
 .payment--items,
 .payment--details {
 	flex: 0.6;
+}
+
+.payment--priceContainer {
+	margin-top: 20px;
+}
+
+.payment--priceContainer > button {
+	background-color: #f0c14b;
+	border: 1px solid;
+	margin-top: 10px;
+	border-color: #a88734 #9c7e31 #846a29;
+	color: #111;
 }

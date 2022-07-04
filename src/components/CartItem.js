@@ -1,10 +1,9 @@
 import { useStateValue } from '../StateProvider'
 import './CartItem.css'
 
-function CartItem({ _key, id, title, image, price, rating }) {
+function CartItem({ _key, id, title, image, price, rating, hideButton }) {
 	const [{ cart }, dispatch] = useStateValue()
 
-	console.log('cart ------>', cart)
 	const removeFromCart = () => {
 		// remove item from cart
 		dispatch({
@@ -31,7 +30,9 @@ function CartItem({ _key, id, title, image, price, rating }) {
 					</p>
 				</div>
 				{/* Remove from cart */}
-				<button onClick={removeFromCart}>Remove from cart</button>
+				{!hideButton && (
+					<button onClick={removeFromCart}>Remove from cart</button>
+				)}
 			</div>
 		</div>
 	)

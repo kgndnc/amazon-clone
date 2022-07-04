@@ -1,21 +1,20 @@
 import './Checkout.css'
 import CartItem from './CartItem'
 import Subtotal from './Subtotal'
-import FlipMove from 'react-flip-move'
+
 import { useStateValue } from '../StateProvider'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth } from '../firebase'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function Checkout() {
 	const [{ cart }, dispatch] = useStateValue()
 	const [cartState, setCartState] = useState(cart)
 	const [user, loading, error] = useAuthState(auth)
 
-	const ticketNotVisibleState = {
-		transform: 'translateX(-100%)',
-		opacity: 0.1,
-	}
+	useEffect(() => {
+		setCartState(cart)
+	}, [cart])
 
 	return (
 		<div className='checkout'>
@@ -38,33 +37,22 @@ function Checkout() {
 						{user
 							? user.displayName
 								? user.displayName
-								: user.email
+								: user.email.slice(0, user?.email.indexOf('@'))
 							: `Guest`}
 					</h3>
 					<h2 className='checkout--title'>Your shopping cart</h2>
-					<FlipMove
-						className='flip-wrapper'
-						enterAnimation={{
-							from: ticketNotVisibleState,
-							to: {},
-						}}
-						leaveAnimation={{
-							from: {},
-							to: ticketNotVisibleState,
-						}}
-					>
-						{cartState.map(item => (
-							<CartItem
-								key={item._key}
-								_key={item._key}
-								id={item.id}
-								title={item.title}
-								image={item.image}
-								price={item.price}
-								rating={item.rating}
-							/>
-						))}
-					</FlipMove>
+
+					{cartState.map(item => (
+						<CartItem
+							key={item._key}
+							_key={item._key}
+							id={item.id}
+							title={item.title}
+							image={item.image}
+							price={item.price}
+							rating={item.rating}
+						/>
+					))}
 				</div>
 			</div>
 

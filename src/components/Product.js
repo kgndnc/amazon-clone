@@ -5,7 +5,15 @@ import uuid from 'react-uuid'
 function Product({ _key, id, title, className, image, price, rating }) {
 	const [{ cart }, dispatch] = useStateValue()
 
-	const addToCart = () => {
+	const addToCart = e => {
+		e.target.disabled = true
+		e.target.style = 'opacity: 0.5; cursor:no-drop;'
+		const disableTimeout = setTimeout(() => {
+			e.target.disabled = false
+			e.target.style = 'opacity: 1; cursor:normal;'
+			clearTimeout(disableTimeout)
+		}, 1400)
+
 		// dispatch the item into the data layer
 		dispatch({
 			type: 'ADD_TO_CART',
@@ -38,7 +46,13 @@ function Product({ _key, id, title, className, image, price, rating }) {
 			</div>
 			<img src={image} />
 
-			<button onClick={addToCart}>Add to cart</button>
+			<button
+				onClick={e => {
+					addToCart(e)
+				}}
+			>
+				Add to cart
+			</button>
 		</div>
 	)
 }

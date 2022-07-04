@@ -1,15 +1,46 @@
 import './Home.css'
 import Product from './Product'
+import 'react-responsive-carousel/lib/styles/carousel.min.css' // requires a loader
+import { Carousel } from 'react-responsive-carousel'
 
 function Home() {
 	return (
 		<div className='home'>
+			<p hidden={true}></p>
 			<div className='home--container'>
-				<img
-					className='home--image'
-					src='https://m.media-amazon.com/images/I/71e3fk5+a7L._SX3000_.jpg'
-					alt='Home Image'
-				/>
+				<div className='background'></div>
+				<Carousel
+					showThumbs={false}
+					showStatus={false}
+					autoPlay={true}
+					animationHandler={'slide'}
+					transitionTime={400}
+					interval={4000}
+					infiniteLoop={true}
+					className='carousel-cont'
+				>
+					<div>
+						<img
+							className='home--image'
+							src='https://m.media-amazon.com/images/I/71e3fk5+a7L._SX3000_.jpg'
+							alt='Home Image'
+						/>
+					</div>
+					<div>
+						<img
+							className='home--image'
+							src='https://m.media-amazon.com/images/I/71AXAGae7IL._SX3000_.jpg'
+							alt='Home Image 2'
+						/>
+					</div>
+					<div>
+						<img
+							className='home--image'
+							src='https://m.media-amazon.com/images/I/61iFvn9SBLL._SX3000_.jpg'
+							alt='Home Image 3'
+						/>
+					</div>
+				</Carousel>
 				<div className='home--row'>
 					<Product
 						id={1}
