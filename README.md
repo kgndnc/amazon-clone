@@ -4,7 +4,6 @@ Here's a link to the --> [site](https://clone-2b9d7.web.app/)
 
 In this project I build an Amazon clone which has the basic e-commerce website functionalities such as signing in, signing up, shopping cart, payment (with Stripe), listing previous orders and so on.
 
-<br />
 
 - For frontend React and for backend Node.js and Cloud Functions for Firebase were used.
 
