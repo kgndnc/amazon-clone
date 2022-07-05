@@ -20,10 +20,6 @@ app.get('/', (request, response) =>
 	response.status(200).send('<h1>Hello, World!</h1>')
 )
 
-app.get('/kagan', (request, response) =>
-	response.status(200).send("<h2>What's up Kagan!</h2>")
-)
-
 // Same URL in Payment.js getClientSecret() method
 app.post('/payments/create', async (req, res) => {
 	const { total } = req.query
@@ -50,4 +46,5 @@ exports.api = functions.https.onRequest(app)
 // API endpoint
 // Add this to axios baseUrl
 // http://localhost:5001/clone-2b9d7/us-central1/api/
+// After deploying change the url above
 
